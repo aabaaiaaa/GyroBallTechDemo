@@ -54,7 +54,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-007: Sound Effects
-- **Status**: pending
+- **Status**: done
 - **Priority**: medium
 - **Dependencies**: TASK-003
 - **Description**: Use the Web Audio API to generate subtle collision sounds: a soft low-frequency thud when a ball hits a wall, and a slightly higher-pitched click when two balls collide. Scale volume by the relative impact velocity so gentle touches are quiet and hard impacts are louder. Also generate three short countdown beep tones (descending or ascending pitch) for the reset countdown (TASK-010). All sounds must respect the sound toggle in settings (TASK-009).
