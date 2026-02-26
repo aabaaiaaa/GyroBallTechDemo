@@ -10,18 +10,19 @@
  *   gyroscope.js  — iOS permission prompt + DeviceOrientation API  (TASK-004, TASK-005)
  *   mouse.js      — Mouse-gravity fallback for desktop             (TASK-006) ✓
  *   sound.js      — Web Audio API collision & countdown sounds     (TASK-007)
- *   vibration.js  — Vibration API haptic feedback                  (TASK-008)
+ *   vibration.js  — Vibration API haptic feedback                  (TASK-008) ✓
  *   settings.js   — Settings panel + localStorage persistence      (TASK-009)
  *   reset.js      — Shake-to-reset + 3-2-1 countdown              (TASK-010)
  */
 
 'use strict';
 
-import { initPhysics }   from './physics.js';
-import { initWalls }     from './walls.js';      // TASK-003
-import { initGyroscope } from './gyroscope.js';  // TASK-004, TASK-005
-import { initMouse }     from './mouse.js';      // TASK-006
-import { initSound }     from './sound.js';      // TASK-007
+import { initPhysics }    from './physics.js';
+import { initWalls }      from './walls.js';       // TASK-003
+import { initGyroscope }  from './gyroscope.js';   // TASK-004, TASK-005
+import { initMouse }      from './mouse.js';       // TASK-006
+import { initSound }      from './sound.js';       // TASK-007
+import { initVibration }  from './vibration.js';   // TASK-008
 
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
@@ -45,6 +46,12 @@ const walls = initWalls(physics.engine);
 //   sound.playCountdownBeep(1)    — play countdown beep for step 1/2/3
 const sound = initSound(physics.engine);
 
+// ── TASK-008: Vibration API haptic feedback ───────────────────────────────────
+// vibration is exported so settings module (TASK-009) can control it:
+//   vibration.setVibrationEnabled(false)  — disable haptic feedback
+// Silently does nothing on browsers that do not support navigator.vibrate.
+const vibration = initVibration(physics.engine);
+
 // ── TASK-004 / TASK-005: iOS gyroscope permission prompt + gravity control ───
 // ── TASK-006: Mouse-gravity fallback ────────────────────────────────────────
 (async () => {
@@ -59,10 +66,8 @@ const sound = initSound(physics.engine);
 
 // Future module initialisations (uncommented as each task is completed):
 //
-//   import { initVibration }  from './vibration.js';   // TASK-008
 //   import { initSettings }   from './settings.js';    // TASK-009
 //   import { initReset }      from './reset.js';        // TASK-010
 //
-//   const settings = initSettings(physics, sound);
-//   const vibe     = initVibration(settings);
+//   const settings = initSettings(physics, sound, vibration);
 //   initReset(physics, walls, sound);

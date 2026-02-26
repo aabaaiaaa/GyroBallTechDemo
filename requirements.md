@@ -62,7 +62,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-008: Vibration Feedback
-- **Status**: pending
+- **Status**: done
 - **Priority**: medium
 - **Dependencies**: TASK-003
 - **Description**: Use the Vibration API to trigger a short haptic pulse when a ball hits a wall or another ball. Scale pulse duration by impact velocity (e.g. 10–40ms). Vibration must respect the vibration toggle in settings (TASK-009) and default to enabled. Gracefully handle browsers that do not support the Vibration API with no errors.
