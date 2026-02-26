@@ -4,8 +4,8 @@
  * Gyro Balls: a physics demo that uses the device gyroscope (or mouse on
  * desktop) to control gravity for a set of bouncing balls.
  *
- * Module responsibilities (to be implemented in subsequent tasks):
- *   physics.js    — Matter.js engine, renderer, and ball creation  (TASK-002)
+ * Module responsibilities:
+ *   physics.js    — Matter.js engine, renderer, and ball creation  (TASK-002) ✓
  *   walls.js      — Screen-boundary static bodies                  (TASK-003)
  *   gyroscope.js  — iOS permission prompt + DeviceOrientation API  (TASK-004, TASK-005)
  *   mouse.js      — Mouse-gravity fallback for desktop             (TASK-006)
@@ -17,6 +17,8 @@
 
 'use strict';
 
+import { initPhysics } from './physics.js';
+
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
   document.body.innerHTML =
@@ -27,24 +29,24 @@ if (typeof Matter === 'undefined') {
 
 console.log(`Gyro Balls — Matter.js ${Matter.version} ready`);
 
-// Placeholder: subsequent tasks will import and initialise their modules here.
-// Example structure once tasks are complete:
+// ── TASK-002: Physics engine + balls ────────────────────────────────────────
+const physics = initPhysics();
+
+// Future module initialisations (uncommented as each task is completed):
 //
-//   import { initPhysics }    from './physics.js';
-//   import { initWalls }      from './walls.js';
-//   import { initGyroscope }  from './gyroscope.js';
-//   import { initMouse }      from './mouse.js';
-//   import { initSound }      from './sound.js';
-//   import { initVibration }  from './vibration.js';
-//   import { initSettings }   from './settings.js';
-//   import { initReset }      from './reset.js';
+//   import { initWalls }      from './walls.js';       // TASK-003
+//   import { initGyroscope }  from './gyroscope.js';   // TASK-004, TASK-005
+//   import { initMouse }      from './mouse.js';        // TASK-006
+//   import { initSound }      from './sound.js';        // TASK-007
+//   import { initVibration }  from './vibration.js';   // TASK-008
+//   import { initSettings }   from './settings.js';    // TASK-009
+//   import { initReset }      from './reset.js';        // TASK-010
 //
 //   (async () => {
-//     const engine   = initPhysics();
-//     const walls    = initWalls(engine);
-//     const settings = initSettings();
+//     const walls    = initWalls(physics.engine);
+//     const settings = initSettings(physics);
 //     const sound    = initSound(settings);
 //     const vibe     = initVibration(settings);
-//     await initGyroscope(engine, { onDenied: () => initMouse(engine) });
-//     initReset(engine, walls, sound);
+//     await initGyroscope(physics.engine, { onDenied: () => initMouse(physics.engine) });
+//     initReset(physics, walls, sound);
 //   })();

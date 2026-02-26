@@ -14,7 +14,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-002: Physics Engine & Ball Creation
-- **Status**: pending
+- **Status**: done
 - **Priority**: high
 - **Dependencies**: TASK-001
 - **Description**: Initialise a Matter.js engine and renderer on a full-screen canvas. Create 10 balls by default, each with randomly varied radius, colour, mass, restitution (bounciness), and friction so they behave differently. Balls should lose energy on each collision and eventually come to rest. Ball count must be configurable (see TASK-009).
