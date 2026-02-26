@@ -23,6 +23,7 @@ import { initGyroscope }  from './gyroscope.js';   // TASK-004, TASK-005
 import { initMouse }      from './mouse.js';       // TASK-006
 import { initSound }      from './sound.js';       // TASK-007
 import { initVibration }  from './vibration.js';   // TASK-008
+import { initSettings }   from './settings.js';    // TASK-009
 
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
@@ -64,10 +65,11 @@ const vibration = initVibration(physics.engine);
   });
 })();
 
+// ── TASK-009: Settings panel + localStorage persistence ───────────────────────
+initSettings(physics, sound, vibration);
+
 // Future module initialisations (uncommented as each task is completed):
 //
-//   import { initSettings }   from './settings.js';    // TASK-009
 //   import { initReset }      from './reset.js';        // TASK-010
 //
-//   const settings = initSettings(physics, sound, vibration);
 //   initReset(physics, walls, sound);

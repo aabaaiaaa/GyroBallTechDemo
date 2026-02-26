@@ -70,7 +70,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-009: Settings Menu
-- **Status**: pending
+- **Status**: done
 - **Priority**: medium
 - **Dependencies**: TASK-007, TASK-008
 - **Description**: Add a small floating gear icon (bottom-right corner) that opens a settings panel overlay. The panel must include: a ball count control (numeric input or slider, range 1–30, default 10) that resets the simulation when changed, a vibration on/off toggle (default on), and a sound on/off toggle (default on). Settings should persist in localStorage so they survive page reloads. The panel must be dismissible by tapping outside it or tapping the gear icon again.
