@@ -94,7 +94,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-012: GitHub Pages Deployment
-- **Status**: pending
+- **Status**: done
 - **Priority**: low
 - **Dependencies**: TASK-011
 - **Description**: Verify the project deploys cleanly to GitHub Pages. Ensure all asset paths are relative (no hardcoded localhost paths), the app loads correctly from a /repo-name/ sub-path if needed, and HTTPS is used (required for DeviceOrientation permission on iOS). Add a minimal README.md documenting how to run locally and the live GitHub Pages URL.
