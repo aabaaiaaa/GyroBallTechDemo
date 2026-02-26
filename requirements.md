@@ -22,7 +22,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-003: Screen Boundary Walls
-- **Status**: pending
+- **Status**: done
 - **Priority**: high
 - **Dependencies**: TASK-002
 - **Description**: Add four invisible static bodies as walls along all screen edges (top, bottom, left, right) so balls bounce off them and are contained within the viewport. Walls must resize correctly if the browser window or screen orientation changes.

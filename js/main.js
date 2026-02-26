@@ -18,6 +18,7 @@
 'use strict';
 
 import { initPhysics } from './physics.js';
+import { initWalls }   from './walls.js';    // TASK-003
 
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
@@ -32,9 +33,11 @@ console.log(`Gyro Balls — Matter.js ${Matter.version} ready`);
 // ── TASK-002: Physics engine + balls ────────────────────────────────────────
 const physics = initPhysics();
 
+// ── TASK-003: Screen boundary walls ─────────────────────────────────────────
+const walls = initWalls(physics.engine);
+
 // Future module initialisations (uncommented as each task is completed):
 //
-//   import { initWalls }      from './walls.js';       // TASK-003
 //   import { initGyroscope }  from './gyroscope.js';   // TASK-004, TASK-005
 //   import { initMouse }      from './mouse.js';        // TASK-006
 //   import { initSound }      from './sound.js';        // TASK-007
@@ -43,7 +46,6 @@ const physics = initPhysics();
 //   import { initReset }      from './reset.js';        // TASK-010
 //
 //   (async () => {
-//     const walls    = initWalls(physics.engine);
 //     const settings = initSettings(physics);
 //     const sound    = initSound(settings);
 //     const vibe     = initVibration(settings);
