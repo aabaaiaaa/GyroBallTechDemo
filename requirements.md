@@ -38,7 +38,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-005: Gyroscope Gravity Control
-- **Status**: pending
+- **Status**: done
 - **Priority**: high
 - **Dependencies**: TASK-002, TASK-004
 - **Description**: Listen to the DeviceOrientation API (gamma for left/right tilt, beta for forward/back tilt) and map those values in real time to the Matter.js gravity vector (world.gravity.x and world.gravity.y). The mapping should feel natural — tipping the phone right should cause balls to roll right. Clamp gravity magnitude to a sensible maximum so balls don't fly too fast.
