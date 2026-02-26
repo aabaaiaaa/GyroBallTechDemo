@@ -86,7 +86,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-011: Polish & Responsive Design
-- **Status**: pending
+- **Status**: done
 - **Priority**: medium
 - **Dependencies**: TASK-002, TASK-003, TASK-004, TASK-005, TASK-006, TASK-007, TASK-008, TASK-009, TASK-010
 - **Description**: Ensure the app looks and feels polished and production-ready. This includes: smooth 60fps rendering, a clean dark background that makes the colourful balls pop, readable typography for any UI elements, the settings panel and countdown overlay styled consistently, correct layout on a range of phone screen sizes and orientations (portrait and landscape), no layout overflow or scroll, and a proper viewport meta tag to prevent unwanted zooming on mobile. Test on iOS Safari and Android Chrome (simulated or real).

@@ -16,6 +16,10 @@ html, body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
   touch-action: none;         /* Prevent scroll on touch devices */
+  /* Smooth text rendering on Apple devices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ============================================================
@@ -50,10 +54,14 @@ html, body {
   background: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  /* Respect notch / home indicator on all sides */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .overlay-card {
-  max-width: 340px;
+  /* Responsive: fills viewport on tiny screens with 1rem breathing room each side */
+  width: min(340px, calc(100vw - 2rem));
   padding: 2rem 2.5rem;
   background: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -92,6 +100,8 @@ html, body {
   transition: background 0.15s ease, transform 0.1s ease;
   -webkit-user-select: none;
   user-select: none;
+  /* Eliminates the 300ms tap delay on mobile */
+  touch-action: manipulation;
 }
 
 .btn-primary:hover {
@@ -106,12 +116,15 @@ html, body {
    Countdown overlay
    ============================================================ */
 .countdown-number {
-  font-size: 12rem;
+  /* Scales gracefully: 6rem min on tiny screens, ~25vw ideal, 12rem max */
+  font-size: clamp(6rem, 25vw, 12rem);
   font-weight: 900;
   color: #ffffff;
   line-height: 1;
   text-shadow: 0 0 60px rgba(79, 142, 247, 0.6);
   animation: pulse 0.85s ease-out infinite;
+  /* GPU-composited animation keeps the main thread free for physics */
+  will-change: transform, opacity;
 }
 
 @keyframes pulse {
@@ -124,15 +137,19 @@ html, body {
    ============================================================ */
 .settings-panel {
   position: fixed;
-  bottom: 5rem;
-  right: 1rem;
+  /* Above the gear button; env() clears the iPhone home indicator / Android gesture bar */
+  bottom: calc(5rem + env(safe-area-inset-bottom));
+  right: calc(1rem + env(safe-area-inset-right));
   z-index: 90;
-  width: 230px;
+  /* 230px on most phones; shrinks on very narrow screens */
+  width: min(230px, calc(100vw - 2rem));
   padding: 1.25rem 1.5rem;
   background: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  /* Scrolling inside the panel must not propagate to the page */
+  overscroll-behavior: contain;
 }
 
 .settings-title {
@@ -182,8 +199,9 @@ html, body {
    ============================================================ */
 .btn-settings {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
+  /* env() clears iPhone home indicator / Android gesture bar */
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  right: calc(1rem + env(safe-area-inset-right));
   z-index: 95;
   width: 3rem;
   height: 3rem;
@@ -197,6 +215,10 @@ html, body {
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, transform 0.2s ease;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  /* Faster tap response */
+  touch-action: manipulation;
+  /* GPU-composited rotation */
+  will-change: transform;
 }
 
 .btn-settings:hover {
@@ -214,7 +236,8 @@ html, body {
    ============================================================ */
 .mouse-mode-label {
   position: fixed;
-  top: 0.75rem;
+  /* env() keeps the label below the notch / status bar */
+  top: calc(0.75rem + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   z-index: 80;
@@ -227,4 +250,70 @@ html, body {
   pointer-events: none;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  /* Prevents the label overflowing on very narrow screens */
+  max-width: calc(100vw - 2rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+   Landscape orientation on short screens (phone held sideways)
+   ============================================================ */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Countdown shrinks proportionally to viewport height in landscape */
+  .countdown-number {
+    font-size: clamp(3.5rem, 20vh, 8rem);
+  }
+
+  /* In landscape the bottom-right layout can be too cramped; move the panel to
+     the top-right and allow scrolling if it's taller than the viewport */
+  .settings-panel {
+    bottom: auto;
+    top: calc(0.5rem + env(safe-area-inset-top));
+    right: calc(5rem + env(safe-area-inset-right)); /* leave room for gear button */
+    max-height: calc(100vh - 1rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    padding: 1rem 1.25rem;
+  }
+
+  /* Gear button anchors to the top-right in landscape */
+  .btn-settings {
+    bottom: auto;
+    top: calc(0.5rem + env(safe-area-inset-top));
+    right: calc(1rem + env(safe-area-inset-right));
+  }
+
+  /* Compact the permission card for landscape */
+  .overlay-card {
+    padding: 1.25rem 1.5rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+
+  .overlay-card h1 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .overlay-card p {
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* ============================================================
+   Very small screens — e.g. iPhone SE 1st gen (320 × 568 pt)
+   ============================================================ */
+@media (max-width: 360px) {
+  .overlay-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .overlay-card h1 {
+    font-size: 1.2rem;
+  }
+
+  .overlay-card p {
+    font-size: 0.875rem;
+  }
 }

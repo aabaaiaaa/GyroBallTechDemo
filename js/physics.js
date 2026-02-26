@@ -29,8 +29,6 @@ const DEFAULT_BALL_COUNT = 10;
  */
 export function initPhysics() {
   const canvas = document.getElementById('world');
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
 
   // ── Engine ──────────────────────────────────────────────────────────────
   const engine = Engine.create();
@@ -40,12 +38,18 @@ export function initPhysics() {
   engine.gravity.y = 1;
 
   // ── Renderer ─────────────────────────────────────────────────────────────
+  // pixelRatio: 'auto' tells Matter.js to read window.devicePixelRatio and
+  // scale the canvas backing store accordingly.  This produces crisp rendering
+  // on Retina / high-DPI screens (iPhones, modern Android, MacBook Retina).
+  // The CSS dimensions remain at the logical pixel size (width/height below);
+  // only the internal canvas resolution is multiplied by the device ratio.
   const render = Render.create({
     canvas,
     engine,
     options: {
-      width:      canvas.width,
-      height:     canvas.height,
+      width:      window.innerWidth,
+      height:     window.innerHeight,
+      pixelRatio: 'auto',
       background: '#111111',
       wireframes: false,
     },
@@ -186,12 +190,16 @@ function _onResize(render, canvas) {
   const w = window.innerWidth;
   const h = window.innerHeight;
 
-  canvas.width          = w;
-  canvas.height         = h;
   render.options.width  = w;
   render.options.height = h;
-  render.canvas.width   = w;
-  render.canvas.height  = h;
+
+  // Render.setPixelRatio updates the canvas backing-store dimensions to
+  // options.width × pixelRatio and options.height × pixelRatio, and resets
+  // the rendering context transform.  Using 'auto' re-reads devicePixelRatio
+  // so the canvas stays sharp if the user moves the window between monitors
+  // with different DPR values (e.g. moving from a Retina Mac to an external
+  // 1× display).
+  Render.setPixelRatio(render, 'auto');
 
   Render.lookAt(render, { min: { x: 0, y: 0 }, max: { x: w, y: h } });
 }
