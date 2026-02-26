@@ -30,7 +30,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-004: iOS Gyroscope Permission Prompt
-- **Status**: pending
+- **Status**: done
 - **Priority**: high
 - **Dependencies**: TASK-001
 - **Description**: On iOS Safari, DeviceOrientationEvent requires explicit user permission. Detect whether permission is needed (iOS 13+) and if so show a friendly full-screen prompt before the demo starts, with a clear "Enable Motion" button that triggers the permission request. If permission is denied, fall back to mouse gravity (TASK-006). On Android and desktop no prompt is needed.

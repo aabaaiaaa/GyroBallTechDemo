@@ -17,8 +17,9 @@
 
 'use strict';
 
-import { initPhysics } from './physics.js';
-import { initWalls }   from './walls.js';    // TASK-003
+import { initPhysics }   from './physics.js';
+import { initWalls }     from './walls.js';      // TASK-003
+import { initGyroscope } from './gyroscope.js';  // TASK-004
 
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
@@ -36,19 +37,25 @@ const physics = initPhysics();
 // ── TASK-003: Screen boundary walls ─────────────────────────────────────────
 const walls = initWalls(physics.engine);
 
+// ── TASK-004: iOS gyroscope permission prompt ────────────────────────────────
+(async () => {
+  await initGyroscope(physics.engine, {
+    onDenied() {
+      // TASK-006: initMouse(physics.engine) will be called here once implemented.
+      console.log('[main] Gyroscope permission denied — mouse-gravity fallback (TASK-006) pending.');
+    },
+  });
+})();
+
 // Future module initialisations (uncommented as each task is completed):
 //
-//   import { initGyroscope }  from './gyroscope.js';   // TASK-004, TASK-005
 //   import { initMouse }      from './mouse.js';        // TASK-006
 //   import { initSound }      from './sound.js';        // TASK-007
 //   import { initVibration }  from './vibration.js';   // TASK-008
 //   import { initSettings }   from './settings.js';    // TASK-009
 //   import { initReset }      from './reset.js';        // TASK-010
 //
-//   (async () => {
-//     const settings = initSettings(physics);
-//     const sound    = initSound(settings);
-//     const vibe     = initVibration(settings);
-//     await initGyroscope(physics.engine, { onDenied: () => initMouse(physics.engine) });
-//     initReset(physics, walls, sound);
-//   })();
+//   const settings = initSettings(physics);
+//   const sound    = initSound(settings);
+//   const vibe     = initVibration(settings);
+//   initReset(physics, walls, sound);
