@@ -24,6 +24,7 @@ import { initMouse }      from './mouse.js';       // TASK-006
 import { initSound }      from './sound.js';       // TASK-007
 import { initVibration }  from './vibration.js';   // TASK-008
 import { initSettings }   from './settings.js';    // TASK-009
+import { initReset }      from './reset.js';       // TASK-010
 
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
@@ -68,8 +69,7 @@ const vibration = initVibration(physics.engine);
 // ── TASK-009: Settings panel + localStorage persistence ───────────────────────
 initSettings(physics, sound, vibration);
 
-// Future module initialisations (uncommented as each task is completed):
-//
-//   import { initReset }      from './reset.js';        // TASK-010
-//
-//   initReset(physics, walls, sound);
+// ── TASK-010: Shake to Reset with 3-2-1 countdown ─────────────────────────────
+// On mobile: shake the device to trigger a reset countdown.
+// On desktop: double-click (or double-tap) anywhere on the canvas.
+initReset(physics, sound);

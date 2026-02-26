@@ -78,7 +78,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-010: Shake to Reset with Countdown
-- **Status**: pending
+- **Status**: done
 - **Priority**: medium
 - **Dependencies**: TASK-007, TASK-003
 - **Description**: Listen to the DeviceMotion API for a shake gesture (sharp acceleration spike above a threshold). When a shake is detected, immediately pause gravity and show a centred 3-2-1 countdown overlay. Play a distinct beep on each count (using the sounds from TASK-007). When the countdown reaches 0, remove all balls, re-create them clustered near the screen centre, and re-engage gravity. The 3-second delay gives the user time to reposition the phone before balls start moving. On desktop, provide an alternative reset (e.g. double-click/double-tap anywhere on the canvas) since shake is not available.

@@ -68,6 +68,7 @@ export function initPhysics() {
     render,
     createBalls:    (count) => _addBalls(engine, count),
     removeAllBalls: ()      => _removeAllBalls(engine),
+    resetBalls:     (count) => _resetBalls(engine, count),
   };
 }
 
@@ -135,6 +136,49 @@ function _addBalls(engine, count) {
 function _removeAllBalls(engine) {
   const balls = engine.world.bodies.filter(b => b.label === 'ball');
   Composite.remove(engine.world, balls);
+}
+
+/**
+ * Create `count` balls clustered near the viewport centre.
+ * Used by the shake-to-reset feature (TASK-010) so balls reappear at the
+ * midpoint regardless of device orientation, giving the user a clean start.
+ *
+ * @param {Matter.Engine} engine
+ * @param {number}        count
+ * @returns {Matter.Body[]}
+ */
+function _resetBalls(engine, count) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const bodies = [];
+
+  for (let i = 0; i < count; i++) {
+    const radius      = _rand(15, 40);
+    const colour      = BALL_COLOURS[Math.floor(Math.random() * BALL_COLOURS.length)];
+    const restitution = _rand(0.40, 0.85);
+    const friction    = _rand(0.005, 0.08);
+    const frictionAir = _rand(0.008, 0.030);
+    const density     = _rand(0.001, 0.004);
+
+    // Cluster balls within the central 30 % of the screen width/height
+    // so they all appear near the midpoint after a reset.
+    const x = _rand(w * 0.35, w * 0.65);
+    const y = _rand(h * 0.35, h * 0.65);
+
+    bodies.push(
+      Bodies.circle(x, y, radius, {
+        label: 'ball',
+        restitution,
+        friction,
+        frictionAir,
+        density,
+        render: { fillStyle: colour, lineWidth: 0 },
+      }),
+    );
+  }
+
+  Composite.add(engine.world, bodies);
+  return bodies;
 }
 
 /** Keep the renderer and canvas dimensions in sync with the viewport. */
