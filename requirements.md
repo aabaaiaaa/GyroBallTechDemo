@@ -46,7 +46,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-006: Desktop Mouse Gravity Fallback
-- **Status**: pending
+- **Status**: done
 - **Priority**: medium
 - **Dependencies**: TASK-002
 - **Description**: When no gyroscope is available (desktop browsers, or iOS permission denied), track mouse position relative to the centre of the screen and use its offset to set the gravity vector, simulating the effect of tilting. Show a small unobtrusive label indicating mouse-control mode is active.
