@@ -1,0 +1,230 @@
+/* ============================================================
+   Base reset & layout
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;           /* No scrollbars — full-screen experience */
+  background: #111111;
+  color: #f0f0f0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;         /* Prevent scroll on touch devices */
+}
+
+/* ============================================================
+   Canvas
+   ============================================================ */
+#world {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================
+   Utility
+   ============================================================ */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   Overlays (permission prompt & countdown)
+   ============================================================ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.overlay-card {
+  max-width: 340px;
+  padding: 2rem 2.5rem;
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.25rem;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+.overlay-card h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.overlay-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #aaaaaa;
+  margin-bottom: 1.75rem;
+}
+
+/* ============================================================
+   Primary button
+   ============================================================ */
+.btn-primary {
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: #4f8ef7;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.btn-primary:hover {
+  background: #3a7be0;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================
+   Countdown overlay
+   ============================================================ */
+.countdown-number {
+  font-size: 12rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  text-shadow: 0 0 60px rgba(79, 142, 247, 0.6);
+  animation: pulse 0.85s ease-out infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+/* ============================================================
+   Settings panel
+   ============================================================ */
+.settings-panel {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  z-index: 90;
+  width: 230px;
+  padding: 1.25rem 1.5rem;
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.settings-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+  color: #cccccc;
+  cursor: pointer;
+}
+
+.settings-row:last-child {
+  margin-bottom: 0;
+}
+
+.settings-row input[type="range"] {
+  flex: 1;
+  accent-color: #4f8ef7;
+}
+
+.settings-value {
+  min-width: 2ch;
+  text-align: right;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.settings-row input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #4f8ef7;
+  cursor: pointer;
+}
+
+/* ============================================================
+   Settings gear button
+   ============================================================ */
+.btn-settings {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 95;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: #cccccc;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.btn-settings:hover {
+  background: rgba(50, 50, 50, 0.95);
+  color: #ffffff;
+}
+
+.btn-settings[aria-expanded="true"] {
+  transform: rotate(45deg);
+  color: #4f8ef7;
+}
+
+/* ============================================================
+   Mouse-mode indicator
+   ============================================================ */
+.mouse-mode-label {
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  padding: 0.3rem 0.9rem;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  color: #888888;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

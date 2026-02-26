@@ -6,7 +6,7 @@ A polished web app tech demo that uses a phone's gyroscope to simulate gravity f
 ---
 
 ### TASK-001: Project Setup & Structure
-- **Status**: pending
+- **Status**: done
 - **Priority**: high
 - **Dependencies**: none
 - **Description**: Scaffold a static HTML/CSS/JS project using Matter.js for physics. Set up the directory structure, include Matter.js via CDN or bundler, and configure the project for GitHub Pages deployment (e.g. correct base paths, an index.html at the root). No framework required — vanilla JS is fine.
