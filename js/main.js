@@ -25,6 +25,7 @@ import { initSound }      from './sound.js';       // TASK-007
 import { initVibration }  from './vibration.js';   // TASK-008
 import { initSettings }   from './settings.js';    // TASK-009
 import { initReset }      from './reset.js';       // TASK-010
+import { initFullscreen } from './fullscreen.js';
 
 // Verify Matter.js loaded via CDN before anything else runs.
 if (typeof Matter === 'undefined') {
@@ -73,3 +74,10 @@ initSettings(physics);
 // On mobile: shake the device to trigger a reset countdown.
 // On desktop: double-click (or double-tap) anywhere on the canvas.
 initReset(physics, sound);
+
+// ── Fullscreen toggle ─────────────────────────────────────────────────────────
+initFullscreen();
+
+// Hide the sound/vibration tip on first user interaction.
+const _tip = document.getElementById('sound-tip');
+document.addEventListener('pointerdown', () => _tip.classList.add('hidden'), { once: true, passive: true });

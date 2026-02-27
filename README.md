@@ -10,6 +10,8 @@ A physics demo that uses your phone's gyroscope to control gravity for a set of 
 - **Haptic feedback** — vibration pulses on collision (where supported)
 - **Shake to reset** — shake your phone (or double-click / double-tap on desktop and tablets) to trigger a 3-2-1 countdown and respawn the balls
 - **Settings** — adjust ball count (1–30), toggle sound, toggle vibration; persisted in `localStorage`
+- **Fullscreen toggle** — button in the bottom-left corner to enter/exit fullscreen (hidden on iOS Safari where the API is unavailable)
+- **Sound & vibration tip** — a pill hint on load prompts the first tap needed to unlock Web Audio; disappears automatically
 - **Desktop fallback** — mouse position controls gravity when no gyroscope is available
 - **iOS permission prompt** — friendly overlay to request `DeviceOrientationEvent` access on iOS 13+
 
@@ -82,4 +84,5 @@ js/
   vibration.js      — Vibration API haptic feedback
   settings.js       — Settings panel and localStorage persistence
   reset.js          — Shake-to-reset with 3-2-1 countdown
+  fullscreen.js     — Fullscreen API toggle (webkit-prefixed fallback included)
 ```

@@ -232,6 +232,54 @@ html, body {
 }
 
 /* ============================================================
+   Fullscreen toggle button
+   ============================================================ */
+.btn-fullscreen {
+  position: fixed;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  left: calc(1rem + env(safe-area-inset-left));
+  z-index: 95;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: #cccccc;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  touch-action: manipulation;
+}
+
+.btn-fullscreen:hover {
+  background: rgba(50, 50, 50, 0.95);
+  color: #ffffff;
+}
+
+/* ============================================================
+   Sound/vibration tip
+   ============================================================ */
+.sound-tip {
+  position: fixed;
+  bottom: calc(5rem + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  padding: 0.3rem 0.9rem;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  color: #aaaaaa;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ============================================================
    Mouse-mode indicator
    ============================================================ */
 .mouse-mode-label {
@@ -282,6 +330,19 @@ html, body {
     bottom: auto;
     top: calc(0.5rem + env(safe-area-inset-top));
     right: calc(1rem + env(safe-area-inset-right));
+  }
+
+  /* Fullscreen button moves to top-left to mirror settings button at top-right */
+  .btn-fullscreen {
+    bottom: auto;
+    top: calc(0.5rem + env(safe-area-inset-top));
+    left: calc(1rem + env(safe-area-inset-left));
+  }
+
+  /* Tip moves to top-centre to avoid bottom-button area in landscape */
+  .sound-tip {
+    bottom: auto;
+    top: calc(0.5rem + env(safe-area-inset-top));
   }
 
   /* Compact the permission card for landscape */
