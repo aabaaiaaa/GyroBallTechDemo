@@ -28,12 +28,8 @@ const checkVibration = document.getElementById('toggle-vibration');
  * @param {{ engine: Matter.Engine, createBalls: (n: number) => void, removeAllBalls: () => void }} physics
  *   The object returned by initPhysics() — used to reset the simulation when
  *   the ball count changes.
- * @param {{ setSoundEnabled: (on: boolean) => void }}     sound
- *   The object returned by initSound() — used to sync the sound toggle.
- * @param {{ setVibrationEnabled: (on: boolean) => void }} vibration
- *   The object returned by initVibration() — used to sync the vibration toggle.
  */
-export function initSettings(physics, sound, vibration) {
+export function initSettings(physics) {
   _applyStoredValues();
   _attachListeners(physics);
 }

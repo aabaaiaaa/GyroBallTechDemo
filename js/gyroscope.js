@@ -146,7 +146,7 @@ function _startGravityControl(engine, onNoGyroscope) {
     const { beta, gamma } = event;
 
     // ── No-gyroscope detection ───────────────────────────────────────────────
-    if (beta === null && gamma === null) {
+    if (beta == null && gamma == null) {
       nullCount += 1;
       if (nullCount >= NO_DATA_THRESHOLD) {
         console.log('[gyroscope] No real gyroscope data — activating mouse-gravity fallback.');
@@ -205,8 +205,25 @@ function _startGravityControl(engine, onNoGyroscope) {
 export async function initGyroscope(engine, { onDenied = () => {} } = {}) {
   if (_permissionRequired()) {
     // ── iOS 13+ path ──────────────────────────────────────────────────────────
-    console.log('[gyroscope] iOS 13+ detected — requesting DeviceOrientation permission.');
-    const state = await _showPermissionPrompt();
+    console.log('[gyroscope] iOS 13+ detected — checking DeviceOrientation permission.');
+
+    // Pre-flight: check existing permission state without a user gesture.
+    // If already granted we can skip the overlay entirely.
+    let state;
+    try {
+      state = await DeviceOrientationEvent.requestPermission();
+    } catch {
+      // requestPermission() outside a user gesture throws on some iOS versions —
+      // treat as 'prompt' and fall through to the overlay.
+      state = 'prompt';
+    }
+
+    if (state !== 'granted') {
+      console.log('[gyroscope] Permission not yet granted — showing prompt overlay.');
+      state = await _showPermissionPrompt();
+    } else {
+      console.log('[gyroscope] Permission already granted — skipping overlay.');
+    }
 
     if (state !== 'granted') {
       console.log('[gyroscope] Permission denied — activating mouse-gravity fallback.');

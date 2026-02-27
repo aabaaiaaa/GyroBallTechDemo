@@ -67,7 +67,7 @@ const vibration = initVibration(physics.engine);
 })();
 
 // ── TASK-009: Settings panel + localStorage persistence ───────────────────────
-initSettings(physics, sound, vibration);
+initSettings(physics);
 
 // ── TASK-010: Shake to Reset with 3-2-1 countdown ─────────────────────────────
 // On mobile: shake the device to trigger a reset countdown.
