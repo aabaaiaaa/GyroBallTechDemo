@@ -8,14 +8,14 @@ A physics demo that uses your phone's gyroscope to control gravity for a set of 
 - **Bouncing physics** — balls collide with each other and the screen edges via [Matter.js](https://brm.io/matter-js/)
 - **Sound effects** — Web Audio API collision sounds scaled by impact velocity
 - **Haptic feedback** — vibration pulses on collision (where supported)
-- **Shake to reset** — shake your phone (or double-click on desktop) to trigger a 3-2-1 countdown and respawn the balls
+- **Shake to reset** — shake your phone (or double-click / double-tap on desktop and tablets) to trigger a 3-2-1 countdown and respawn the balls
 - **Settings** — adjust ball count (1–30), toggle sound, toggle vibration; persisted in `localStorage`
 - **Desktop fallback** — mouse position controls gravity when no gyroscope is available
 - **iOS permission prompt** — friendly overlay to request `DeviceOrientationEvent` access on iOS 13+
 
 ## Live Demo
 
-[https://jeastaugh.github.io/1.next.project/](https://jeastaugh.github.io/1.next.project/)
+[https://jeastaugh.github.io/GyroBallTechDemo/](https://jeastaugh.github.io/GyroBallTechDemo/)
 
 > **Note for iOS users:** The demo must be served over HTTPS for the gyroscope permission prompt to work. GitHub Pages provides HTTPS automatically.
 

@@ -1,8 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cd:C:\\Users\\jeastaugh\\source\\repos\\Experiments\\1.next.project)",
-      "Bash(cd:C:\\Users\\jeastaugh\\source\\repos\\Experiments\\1.next.project/**)",
+      "Bash(cd:C:\\Users\\jeastaugh\\source\\repos\\Experiments\\GyroBallTechDemo)",
+      "Bash(cd:C:\\Users\\jeastaugh\\source\\repos\\Experiments\\GyroBallTechDemo/**)",
       "Bash(npm:*)",
       "Bash(npx:*)",
       "Bash(node:*)",
@@ -28,5 +28,5 @@
     ]
   },
   "restrictToWorkspace": true,
-  "workspacePath": "C:\\Users\\jeastaugh\\source\\repos\\Experiments\\1.next.project"
+  "workspacePath": "C:\\Users\\jeastaugh\\source\\repos\\Experiments\\GyroBallTechDemo"
 }
