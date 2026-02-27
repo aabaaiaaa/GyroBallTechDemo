@@ -10,6 +10,13 @@ const MIN_SPEED = 1.0;
 const MAX_SPEED = 20;
 
 /**
+ * Ball radius range (must match the range in physics.js).
+ * Used to derive the frequency scale: smaller balls → higher pitch.
+ */
+const MIN_RADIUS = 15;
+const MAX_RADIUS = 40;
+
+/**
  * Minimum milliseconds between sounds for the same body pair.
  * Prevents audio spam when bodies rest against each other.
  */
@@ -139,16 +146,22 @@ function _onCollision(event) {
     let speed      = 0;
     let isBallBall = false;
 
+    let freqScale = 1;
+
     if (aIsBall && bIsBall) {
       // Ball-to-ball: relative speed between the two moving bodies
       const dvx = bodyA.velocity.x - bodyB.velocity.x;
       const dvy = bodyA.velocity.y - bodyB.velocity.y;
       speed      = Math.sqrt(dvx * dvx + dvy * dvy);
       isBallBall = true;
+      // Geometric mean radius gives a pitch between the two colliding balls
+      const meanRadius = Math.sqrt(bodyA.circleRadius * bodyB.circleRadius);
+      freqScale = _radiusToFreqScale(meanRadius);
     } else if ((aIsBall && bIsWall) || (bIsBall && aIsWall)) {
       // Ball-to-wall: the ball's own speed at impact
       const ball = aIsBall ? bodyA : bodyB;
       speed = Math.sqrt(ball.velocity.x ** 2 + ball.velocity.y ** 2);
+      freqScale = _radiusToFreqScale(ball.circleRadius);
     } else {
       continue; // ignore all other collision types
     }
@@ -164,9 +177,9 @@ function _onCollision(event) {
     // ── Emit the appropriate sound ────────────────────────────────────────────
     const volume = _speedToVolume(speed);
     if (isBallBall) {
-      _playBallCollision(volume);
+      _playBallCollision(volume, freqScale);
     } else {
-      _playWallCollision(volume);
+      _playWallCollision(volume, freqScale);
     }
   }
 }
@@ -174,12 +187,14 @@ function _onCollision(event) {
 /**
  * Synthesise a soft low-frequency thud for wall impacts.
  *
- * A sine wave sweeps from 90 Hz → 45 Hz over a short decay, producing a
- * dull, padded knock that suits a rubber ball hitting a hard boundary.
+ * A sine wave sweeps from 90 Hz → 45 Hz over a short decay, scaled by
+ * `freqScale` so smaller balls produce a higher-pitched knock and larger
+ * balls produce a deeper thud.
  *
- * @param {number} volume  Gain level in [0, 1].
+ * @param {number} volume     Gain level in [0, 1].
+ * @param {number} freqScale  Frequency multiplier derived from ball radius.
  */
-function _playWallCollision(volume) {
+function _playWallCollision(volume, freqScale) {
   const ctx = _getContext();
   if (!ctx) return;
 
@@ -190,8 +205,8 @@ function _playWallCollision(volume) {
   gain.connect(ctx.destination);
 
   osc.type = 'sine';
-  osc.frequency.setValueAtTime(90, now);
-  osc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+  osc.frequency.setValueAtTime(90 * freqScale, now);
+  osc.frequency.exponentialRampToValueAtTime(45 * freqScale, now + 0.12);
 
   gain.gain.setValueAtTime(0, now);
   gain.gain.linearRampToValueAtTime(volume * 0.50, now + 0.008); // fast attack
@@ -205,11 +220,13 @@ function _playWallCollision(volume) {
  * Synthesise a short higher-pitched click for ball-to-ball collisions.
  *
  * A triangle wave sweeps from 320 Hz → 160 Hz over a very short envelope,
- * giving a crisp tick/click that sounds distinct from the wall thud.
+ * scaled by `freqScale` so two small balls colliding produce a high-pitched
+ * tick while two large balls produce a lower-pitched knock.
  *
- * @param {number} volume  Gain level in [0, 1].
+ * @param {number} volume     Gain level in [0, 1].
+ * @param {number} freqScale  Frequency multiplier derived from ball radius.
  */
-function _playBallCollision(volume) {
+function _playBallCollision(volume, freqScale) {
   const ctx = _getContext();
   if (!ctx) return;
 
@@ -220,8 +237,8 @@ function _playBallCollision(volume) {
   gain.connect(ctx.destination);
 
   osc.type = 'triangle';
-  osc.frequency.setValueAtTime(320, now);
-  osc.frequency.exponentialRampToValueAtTime(160, now + 0.06);
+  osc.frequency.setValueAtTime(320 * freqScale, now);
+  osc.frequency.exponentialRampToValueAtTime(160 * freqScale, now + 0.06);
 
   gain.gain.setValueAtTime(0, now);
   gain.gain.linearRampToValueAtTime(volume * 0.35, now + 0.004); // very fast attack
@@ -287,6 +304,23 @@ function _scheduleContextResume() {
  */
 function _speedToVolume(speed) {
   return Math.min(1, (speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED));
+}
+
+/**
+ * Map a ball radius to a frequency multiplier on a log scale.
+ *
+ * Smaller balls → higher pitch (scale > 1); larger balls → lower pitch (scale < 1).
+ * The scale covers exactly two octaves across the full radius range:
+ *   radius = MIN_RADIUS (15 px) → scale = 2.0  (one octave up)
+ *   radius = mid-point  (27 px) → scale = 1.0  (base frequency)
+ *   radius = MAX_RADIUS (40 px) → scale = 0.5  (one octave down)
+ *
+ * @param {number} radius  Ball circleRadius in pixels.
+ * @returns {number}       Frequency multiplier in [0.5, 2.0].
+ */
+function _radiusToFreqScale(radius) {
+  const t = (radius - MIN_RADIUS) / (MAX_RADIUS - MIN_RADIUS); // 0 = small, 1 = large
+  return Math.pow(2, 1 - 2 * t); // 2^1 = 2.0 at t=0; 2^-1 = 0.5 at t=1
 }
 
 /**
